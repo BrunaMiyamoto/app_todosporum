@@ -330,7 +330,7 @@ class HeroSection extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              'Participe ativamente do debate público: envie projetos, proponha pautas, registre reclamações e interaja com outros cidadãos. Vote nas melhores iniciativas e ajude a transformar sua comunidade.',
+              'Participe ativamente do debate público: envie projetos, proponha pautas, registre reclamações e interaja com outros cidadãos.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white70,
@@ -380,6 +380,7 @@ class HeroSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 15,
                 decoration: TextDecoration.underline,
+                decorationColor: Colors.white,
               ),
             ),
           ),
@@ -389,40 +390,59 @@ class HeroSection extends StatelessWidget {
   }
 }
 
-class CommunityHighlights extends StatelessWidget {
+class CommunityHighlights extends StatefulWidget {
   const CommunityHighlights({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final cards = [
-      CommunityCard(
-        tags: const ['Ensino'],
-        title:
-            'Projeto "Educação Política nas Escolas" - Formação de Jovens Cidadãos',
-        description:
-            'Objetivo: Implementar oficinas e palestras sobre cidadania, política, direitos e deveres nas escolas públicas de Marília, promovendo o engajamento político desde a juventude.',
-        author: 'Projeto por: Usuário0002',
-        accent: const Color(0xFF2E9C66),
-      ),
-      CommunityCard(
-        tags: const ['Infraestrutura', 'Natureza'],
-        title: 'Projeto "Praça Viva" - Revitalização de Espaços Públicos',
-        description:
-            'Objetivo: Transformar praças abandonadas ou pouco utilizadas em espaços comunitários ativos, com infraestrutura básica (bancos, iluminação, lixeiras), área verde, brinquedos para crianças e espaços para atividades culturais e esportivas.',
-        author: 'Projeto por: Usuário0003',
-        accent: const Color(0xFF2E9C66),
-      ),
-      CommunityCard(
-        tags: const ['Comunicação', 'Tecnologia'],
-        title:
-            'Projeto "Ouvidoria Cidadã Digital" - Plataforma de Escuta Popular',
-        description:
-            'Objetivo: Criar um canal digital de escuta permanente do povo, onde qualquer cidadão possa registrar sugestões, reclamações e ideias diretamente vinculadas às secretarias municipais e vereadores.',
-        author: 'Projeto por: Todos por Um',
-        accent: const Color(0xFF2E9C66),
-      ),
-    ];
+  State<CommunityHighlights> createState() => _CommunityHighlightsState();
+}
 
+class _CommunityHighlightsState extends State<CommunityHighlights> {
+  late final PageController _pageController;
+
+  final List<CommunityCard> cards = const [
+    CommunityCard(
+      tags: ['Ensino'],
+      title:
+          'Projeto "Educação Política nas Escolas" - Formação de Jovens Cidadãos',
+      description:
+          'Objetivo: Implementar oficinas e palestras sobre cidadania, política, direitos e deveres nas escolas públicas de Marília, promovendo o engajamento político desde a juventude.',
+      author: 'Projeto por: Usuário0002',
+      accent: Color(0xFF2E9C66),
+    ),
+    CommunityCard(
+      tags: ['Infraestrutura', 'Natureza'],
+      title: 'Projeto "Praça Viva" - Revitalização de Espaços Públicos',
+      description:
+          'Objetivo: Transformar praças abandonadas ou pouco utilizadas em espaços comunitários ativos, com infraestrutura básica (bancos, iluminação, lixeiras), área verde, brinquedos para crianças e espaços para atividades culturais e esportivas.',
+      author: 'Projeto por: Usuário0003',
+      accent: Color(0xFF2E9C66),
+    ),
+    CommunityCard(
+      tags: ['Comunicação', 'Tecnologia'],
+      title:
+          'Projeto "Ouvidoria Cidadã Digital" - Plataforma de Escuta Popular',
+      description:
+          'Objetivo: Criar um canal digital de escuta permanente do povo, onde qualquer cidadão possa registrar sugestões, reclamações e ideias diretamente vinculadas às secretarias municipais e vereadores.',
+      author: 'Projeto por: Todos por Um',
+      accent: Color(0xFF2E9C66),
+    ),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(viewportFraction: 0.86);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       color: const Color(0xFFEAF3F5),
@@ -442,10 +462,19 @@ class CommunityHighlights extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 22),
-              ...cards.map(
-                (card) => Padding(
-                  padding: const EdgeInsets.only(bottom: 18),
-                  child: card,
+              SizedBox(
+                height: 360,
+                child: PageView.builder(
+                  controller: _pageController,
+                  scrollDirection: Axis.horizontal,
+                  padEnds: true,
+                  itemCount: cards.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: cards[index],
+                    );
+                  },
                 ),
               ),
             ],
@@ -568,44 +597,44 @@ class BottomFooter extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 1000),
           child: Column(
             children: [
-              const SizedBox(height: 8),
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 28,
-                runSpacing: 12,
-                children: const [
-                  FooterColumn(
-                    title: 'Fórum',
-                    items: [
-                      'Posts em destaque',
-                      'Sua conta',
-                      'Suas postagens',
-                      'Segurança e privacidade',
-                      'Acessibilidade',
-                    ],
-                  ),
-                  FooterColumn(
-                    title: 'Sobre nós',
-                    items: ['Sobre o projeto', 'Nossos objetivos'],
-                  ),
-                  FooterColumn(title: 'Contato', items: ['Entre em contato']),
-                  FooterColumn(
-                    title: 'Aprenda',
-                    items: ['Sobre', 'Vídeos', 'Artigos'],
-                  ),
-                  FooterColumn(
-                    title: 'Nossas políticas',
-                    items: [
-                      'Políticas de privacidade',
-                      'Políticas de cookies',
-                      'Termos de Uso',
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 22),
-              const Divider(color: Colors.white54, thickness: 1),
-              const SizedBox(height: 12),
+              // const SizedBox(height: 8),
+              // Wrap(
+              //   alignment: WrapAlignment.center,
+              //   spacing: 28,
+              //   runSpacing: 12,
+              //   children: const [
+              //     FooterColumn(
+              //       title: 'Fórum',
+              //       items: [
+              //         'Posts em destaque',
+              //         'Sua conta',
+              //         'Suas postagens',
+              //         'Segurança e privacidade',
+              //         'Acessibilidade',
+              //       ],
+              //     ),
+              //     FooterColumn(
+              //       title: 'Sobre nós',
+              //       items: ['Sobre o projeto', 'Nossos objetivos'],
+              //     ),
+              //     FooterColumn(title: 'Contato', items: ['Entre em contato']),
+              //     FooterColumn(
+              //       title: 'Aprenda',
+              //       items: ['Sobre', 'Vídeos', 'Artigos'],
+              //     ),
+              //     FooterColumn(
+              //       title: 'Nossas políticas',
+              //       items: [
+              //         'Políticas de privacidade',
+              //         'Políticas de cookies',
+              //         'Termos de Uso',
+              //       ],
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(height: 22),
+              // const Divider(color: Colors.white54, thickness: 1),
+              // const SizedBox(height: 12),
               const Text(
                 'Todos os direitos reservados',
                 style: TextStyle(color: Colors.white70, fontSize: 12),
