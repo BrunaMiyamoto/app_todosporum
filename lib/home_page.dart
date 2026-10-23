@@ -1,3 +1,4 @@
+import 'package:app_todosporum/app_bottom_nav.dart';
 import 'package:app_todosporum/aprenda_sobre_page.dart';
 import 'package:app_todosporum/contatos_page.dart';
 import 'package:app_todosporum/forum_page.dart';
@@ -5,152 +6,201 @@ import 'package:app_todosporum/politicas_page.dart';
 import 'package:app_todosporum/sobre_nos_page.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          "assets/img/logo branco.png",
-          height: 35,
-          width: 70,
-          fit: BoxFit.contain,
-        ),
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF28A2F),
-                foregroundColor: Colors.white,
-                shape: const CircleBorder(),
-                padding: EdgeInsets.zero,
-                minimumSize: const Size(45, 45),
-                fixedSize: const Size(45, 45),
-                elevation: 0,
-              ),
-              child: const Icon(Icons.login),
-            ),
-          ),
-        ],
-      ),
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final screens = [
+      const HomeContent(),
+      const ForumPreview(),
+      const LearnPreview(),
+      const UserAreaPage(),
+    ];
+
+    return Scaffold(
+      appBar: _selectedIndex == 0
+          ? AppBar(
+              title: Image.asset(
+                "assets/img/logo branco.png",
+                height: 35,
+                width: 70,
+                fit: BoxFit.contain,
+              ),
+              centerTitle: true,
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFF28A2F),
+                      foregroundColor: Colors.white,
+                      shape: const CircleBorder(),
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(45, 45),
+                      fixedSize: const Size(45, 45),
+                      elevation: 0,
+                    ),
+                    child: const Icon(Icons.login),
+                  ),
+                ),
+              ],
+            )
+          : null,
+      drawer: _selectedIndex == 0
+          ? Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  DrawerHeader(
+                    decoration: BoxDecoration(color: Color(0xFF0F3C4E)),
+                    child: Text(
+                      "Todos Por Um",
+                      style: TextStyle(color: Colors.white, fontSize: 22),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.home),
+                    iconColor: Color(0xFFF28A2F),
+                    title: Text(
+                      "Inicio",
+                      style: TextStyle(color: Color(0xFFF28A2F)),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.forum),
+                    iconColor: Color(0xFFF28A2F),
+                    title: Text(
+                      "Fórum",
+                      style: TextStyle(color: Color(0xFFF28A2F)),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ForumPage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.assignment_late_outlined),
+                    iconColor: Color(0xFFF28A2F),
+                    title: Text(
+                      "Sobre Nós",
+                      style: TextStyle(color: Color(0xFFF28A2F)),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => SobreNosPage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.article),
+                    iconColor: Color(0xFFF28A2F),
+                    title: Text(
+                      "Aprenda sobre",
+                      style: TextStyle(color: Color(0xFFF28A2F)),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => AprendaSobrePage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.call),
+                    iconColor: Color(0xFFF28A2F),
+                    title: Text(
+                      "Contatos",
+                      style: TextStyle(color: Color(0xFFF28A2F)),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ContatosPage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.announcement_outlined),
+                    iconColor: Color(0xFFF28A2F),
+                    title: Text(
+                      "Nossas Políticas",
+                      style: TextStyle(color: Color(0xFFF28A2F)),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => PoliticasPage()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            )
+          : null,
+
+      body: screens[_selectedIndex],
+      bottomNavigationBar: AppBottomNavigationBar(
+        selectedIndex: _selectedIndex,
+        onTap: (index) => setState(() => _selectedIndex = index),
+      ),
+    );
+  }
+}
+
+class HomeContent extends StatelessWidget {
+  const HomeContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
           children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Color(0xFF0F3C4E)),
-              child: Text(
-                "Todos Por Um",
-                style: TextStyle(color: Colors.white, fontSize: 22),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              iconColor: Color(0xFFF28A2F),
-              title: Text("Inicio", style: TextStyle(color: Color(0xFFF28A2F))),
-            ),
-            ListTile(
-              leading: Icon(Icons.forum),
-              iconColor: Color(0xFFF28A2F),
-              title: Text("Fórum", style: TextStyle(color: Color(0xFFF28A2F))),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => ForumPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.assignment_late_outlined),
-              iconColor: Color(0xFFF28A2F),
-              title: Text(
-                "Sobre Nós",
-                style: TextStyle(color: Color(0xFFF28A2F)),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => SobreNosPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.article),
-              iconColor: Color(0xFFF28A2F),
-              title: Text(
-                "Aprenda sobre",
-                style: TextStyle(color: Color(0xFFF28A2F)),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => AprendaSobrePage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.call),
-              iconColor: Color(0xFFF28A2F),
-              title: Text(
-                "Contatos",
-                style: TextStyle(color: Color(0xFFF28A2F)),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => ContatosPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.announcement_outlined),
-              iconColor: Color(0xFFF28A2F),
-              title: Text(
-                "Nossas Políticas",
-                style: TextStyle(color: Color(0xFFF28A2F)),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => PoliticasPage()),
-                );
-              },
-            ),
+            HeroSection(),
+            const CommunityHighlights(),
+            const BottomFooter(),
           ],
         ),
-      ), //menu hamburguer
-
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // const TopBar(
-              //   navItems: [
-              //     'Inicio',
-              //     'Fórum',
-              //     'Sobre Nós',
-              //     'Aprenda Sobre',
-              //     'Contato',
-              //   ],
-              // ),
-              HeroSection(),
-              const CommunityHighlights(),
-              const BottomFooter(),
-            ],
-          ),
-        ),
       ),
+    );
+  }
+}
+
+class ForumPreview extends StatelessWidget {
+  const ForumPreview({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Icon(Icons.forum, size: 80, color: Color(0xFF0A6D8E)),
+    );
+  }
+}
+
+class LearnPreview extends StatelessWidget {
+  const LearnPreview({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Icon(Icons.menu_book, size: 80, color: Color(0xFFF28A2F)),
     );
   }
 }
