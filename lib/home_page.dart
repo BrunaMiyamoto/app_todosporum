@@ -6,6 +6,19 @@ import 'package:app_todosporum/politicas_page.dart';
 import 'package:app_todosporum/sobre_nos_page.dart';
 import 'package:flutter/material.dart';
 
+// ============================================================
+// HOME / TELA INICIAL DO APP
+// ============================================================
+// Esta é a tela principal do aplicativo. Ela reúne:
+// - o cabeçalho da página
+// - o menu lateral (drawer)
+// - a navegação inferior
+// - o conteúdo da home com destaque e rodapé
+//
+// A estrutura foi organizada por blocos para facilitar a manutenção.
+// Se você quiser alterar a página inicial, procure primeiro a seção
+// correspondente ao bloco e mantenha o mesmo padrão de organização.
+// ============================================================
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -13,11 +26,42 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+// ============================================================
+// BLOCO 2: ESTADO DA HOME E ABA ATIVA
+// ============================================================
+// Este state controla qual conteúdo está sendo exibido na tela.
+//
+// _selectedIndex representa a aba atual selecionada na bottom bar.
+// Quando esse valor muda, o app troca o corpo da tela entre as telas
+// de pré-visualização da home, do fórum, do aprendizado e do perfil.
+//
+// Exemplo:
+// - 0 = Home
+// - 1 = Fórum
+// - 2 = Aprender
+// - 3 = Perfil
+//
+// Isso é a "fonte da verdade" da navegação da home. Qualquer alteração
+// nesse valor afeta o que aparece na tela.
+// ============================================================
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    // ========================================================
+    // BLOCO 2.1: LISTA DE TELAS DE CADA ABA
+    // ========================================================
+    // A lista abaixo mapeia cada índice para um widget visual.
+    // Essa estrutura é a base da navegação da home. Se você quiser
+    // adicionar uma nova aba, basta inserir mais um item aqui e não
+    // esquecer de ajustar o índice e a navegação correspondente.
+    //
+    // Exemplo de duplicação:
+    // 1. copie um widget de conteúdo já existente
+    // 2. adicione a nova tela na lista
+    // 3. conecte a nova aba ao BottomNavigationBar
+    // ========================================================
     final screens = [
       const HomeContent(),
       const ForumPreview(),
@@ -26,6 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return Scaffold(
+      // ========================================================
+      // BLOCO 2.2: CABEÇALHO E MENU LATERAL (DRAWER)
+      // ========================================================
+      // Aqui se define o topo da tela e o menu que abre ao clicar no
+      // ícone do lado. O item do drawer também é uma rota de navegação
+      // para outras páginas do app.
+      //
+      // Se você quiser adicionar um novo item ao menu, copie um
+      // ListTile e troque o ícone, o texto e a rota de destino.
+      // ========================================================
       appBar: _selectedIndex == 0
           ? AppBar(
               title: Image.asset(
@@ -74,6 +128,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Inicio",
                       style: TextStyle(color: Color(0xFFF28A2F)),
                     ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => HomeScreen()),
+                      );
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.forum),
@@ -106,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.article),
+                    leading: Icon(Icons.menu_book),
                     iconColor: Color(0xFFF28A2F),
                     title: Text(
                       "Aprenda sobre",
@@ -157,13 +218,53 @@ class _HomeScreenState extends State<HomeScreen> {
 
       body: screens[_selectedIndex],
       bottomNavigationBar: AppBottomNavigationBar(
-        selectedIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
+        selectedIndex: 0,
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const HomeScreen()),
+            );
+          }
+          if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const ForumPage()),
+            );
+          }
+          if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const AprendaSobrePage()),
+            );
+          }
+          if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const UserAreaPage()),
+            );
+          }
+        },
       ),
     );
   }
 }
 
+// ============================================================
+// BLOCO 3: CONTEÚDO PRINCIPAL DA HOME
+// ============================================================
+// Este widget reúne os blocos visuais da página inicial.
+// A lógica aqui é simples: cada filho da Column representa uma seção
+// diferente do layout.
+//
+// Estrutura da home:
+// 1. HeroSection -> chamada principal com texto e CTA
+// 2. CommunityHighlights -> destaques da comunidade
+// 3. BottomFooter -> rodapé final
+//
+// Se você quiser duplicar uma seção, esse é o lugar mais fácil para
+// alterar, remover ou incluir um novo bloco visual.
+// ============================================================
 class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
 
@@ -183,6 +284,15 @@ class HomeContent extends StatelessWidget {
   }
 }
 
+// ============================================================
+// BLOCO 3.1: PREVIEW DA ABA FORUM
+// ============================================================
+// Este widget é uma versão simples da aba do fórum para mostrar um
+// placeholder visual enquanto a home navega entre as outras áreas.
+//
+// Em vez de exibir o conteúdo total do fórum, ele apenas mostra um
+// ícone e funciona como "reserva" do espaço de navegação.
+// ============================================================
 class ForumPreview extends StatelessWidget {
   const ForumPreview({super.key});
 
@@ -194,6 +304,16 @@ class ForumPreview extends StatelessWidget {
   }
 }
 
+// ============================================================
+// BLOCO 3.2: PREVIEW DA ABA APRENDER
+// ============================================================
+// Assim como o Fórum, esta área é uma representação simples do conteúdo
+// futuro de aprendizado. Ela ajuda a manter o fluxo da navegação da
+// home sem abrir uma tela completa para cada aba.
+//
+// Se for criar uma tela real de aprendizado, esse bloco pode ser
+// trocado por um widget com conteúdo completo.
+// ============================================================
 class LearnPreview extends StatelessWidget {
   const LearnPreview({super.key});
 
@@ -205,6 +325,29 @@ class LearnPreview extends StatelessWidget {
   }
 }
 
+// ============================================================
+// BLOCO 4: BARRA SUPERIOR E LOGO DO APP
+// ============================================================
+// Este bloco representa a parte superior da interface do app.
+// Ele não é a mesma coisa que a AppBar principal que aparece dentro do
+// Scaffold da home, mas sim uma seção visual reutilizável para a parte
+// de navegação e marca do aplicativo.
+//
+// Função dele:
+// - mostrar o logo do app
+// - exibir itens de navegação em linha ou em empilhamento no mobile
+// - incluir o botão de Login/Registro
+//
+// Esse tipo de componente é muito útil para reaproveitar a mesma
+// estrutura em outras telas. Se você quiser criar uma nova página com
+// visual parecido, basta copiar esse bloco e trocar os textos e ações.
+//
+// Regras importantes:
+// - navItems define os nomes dos itens de navegação
+// - LayoutBuilder identifica se a tela está em mobile ou desktop
+// - o botão de login é o elemento visual que fica em destaque na parte
+//   superior direita
+// ============================================================
 class TopBar extends StatelessWidget {
   const TopBar({super.key, required this.navItems});
 
@@ -310,6 +453,21 @@ class TopBar extends StatelessWidget {
   }
 }
 
+// ============================================================
+// BLOCO 4.1: LOGOTIPO DO APP
+// ============================================================
+// Esse widget cria a marca visual do app e normalmente fica no canto
+// esquerdo da barra superior.
+//
+// Ele é composto por:
+// - um círculo com gradiente azul
+// - a sigla "TPU"
+// - texto "TODOS POR UM" ao lado
+//
+// Como é um widget isolado, ele pode ser facilmente copiado e reutilizado
+// em várias telas. Se quiser alterar a identidade visual do app, este é
+// um ótimo ponto para mexer.
+// ============================================================
 class AppLogo extends StatelessWidget {
   const AppLogo({super.key});
 
@@ -340,7 +498,7 @@ class AppLogo extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         const Text(
-          'TODOS\nPOR UM',
+          'TODOS POR UM',
           style: TextStyle(
             color: Color(0xFF0A6D8E),
             fontWeight: FontWeight.w800,
@@ -353,6 +511,25 @@ class AppLogo extends StatelessWidget {
   }
 }
 
+// ============================================================
+// BLOCO 5: HERO SECTION / CHAMADA PRINCIPAL DA HOME
+// ============================================================
+// Esta é a primeira grande seção visual que o usuário vê ao entrar na
+// home. Ela funciona como um banner principal de destaque do app.
+//
+// O que ela contém:
+// - título grande em destaque
+// - texto explicativo
+// - campo de texto para o usuário escrever uma ideia
+// - botão para explorar o fórum
+//
+// A sua importância é dupla:
+// 1. chamar atenção do usuário imediatamente
+// 2. orientar a navegação para a parte de participação / fórum
+//
+// Se você quiser criar uma nova chamada principal ou uma nova landing
+// page, esse bloco é o modelo ideal para servir de base.
+// ============================================================
 class HeroSection extends StatelessWidget {
   HeroSection({super.key});
 
@@ -446,6 +623,25 @@ class HeroSection extends StatelessWidget {
   }
 }
 
+// ============================================================
+// BLOCO 6: DESTAQUES DA COMUNIDADE
+// ============================================================
+// Esta seção mostra projetos ou ideias mais importantes da comunidade.
+// Ela funciona como um "carrossel" horizontal de cards, permitindo que o
+// usuário navegue entre diferentes propostas sem sair da tela.
+//
+// A estrutura aqui é composta por:
+// - título da seção
+// - PageView com vários cards
+// - dados dinâmicos em uma lista chamada cards
+//
+// O estado dessa seção é controlado pelo PageController, que permite a
+// rolagem horizontal. Isso é importante para tornar a seção interativa e
+// visualmente mais dinâmica.
+//
+// Se quiser adicionar mais destaques, basta incluir novos itens na lista
+// cards. O sistema já sabe renderizar automaticamente cada card.
+// ============================================================
 class CommunityHighlights extends StatefulWidget {
   const CommunityHighlights({super.key});
 
@@ -541,6 +737,22 @@ class _CommunityHighlightsState extends State<CommunityHighlights> {
   }
 }
 
+// ============================================================
+// BLOCO 6.1: CARD INDIVIDUAL DE DESTAQUE
+// ============================================================
+// Cada card representa um projeto ou proposta específica.
+//
+// Ele contém:
+// - tags da categoria do projeto
+// - título do projeto
+// - descrição detalhada
+// - autor do projeto
+// - visual em card branco com borda e sombra
+//
+// Esse tipo de widget é ótimo para duplicar. Se você quiser criar outro
+// projeto, basta instanciar um novo CommunityCard com texto e tag diferentes.
+// O layout já está pronto.
+// ============================================================
 class CommunityCard extends StatelessWidget {
   const CommunityCard({
     super.key,
@@ -645,6 +857,22 @@ class CommunityCard extends StatelessWidget {
   }
 }
 
+// ============================================================
+// BLOCO 7: RODAPÉ FINAL DA HOME
+// ============================================================
+// O rodapé é a última seção da página e costuma conter informações
+// complementares e redes sociais.
+//
+// Neste projeto, ele está mais enxuto, mas a ideia é que ele sirva como
+// fechamento da interface. Ele pode ser usado para:
+// - avisos de direitos autorais
+// - ícones de redes sociais
+// - links rápidos
+// - contato ou institucional
+//
+// Como é um bloco isolado, ele pode ser facilmente expandido sem afetar
+// o restante da home.
+// ============================================================
 class BottomFooter extends StatelessWidget {
   const BottomFooter({super.key});
 
@@ -719,6 +947,20 @@ class BottomFooter extends StatelessWidget {
   }
 }
 
+// ============================================================
+// BLOCO 7.1: COLUNAS DO RODAPÉ
+// ============================================================
+// Este widget foi pensado para organizar links ou seções dentro do rodapé.
+//
+// A lógica é simples:
+// - cada coluna recebe um título
+// - recebe uma lista de textos/itens
+// - renderiza os itens em coluna vertical
+//
+// No código atual ele está comentado, mas isso significa que essa parte
+// foi planejada e pode ser reativada quando quiser montar um rodapé mais
+// completo com navegação institucional.
+// ============================================================
 class FooterColumn extends StatelessWidget {
   const FooterColumn({super.key, required this.title, required this.items});
 
@@ -756,6 +998,19 @@ class FooterColumn extends StatelessWidget {
   }
 }
 
+// ============================================================
+// BLOCO 7.2: ÍCONES SOCIAIS DO RODAPÉ
+// ============================================================
+// Esse widget representa um ícone pequeno usado no fim da página, como
+// redes sociais ou canais de contato.
+//
+// Ele é um componente simples: círculo com borda, fundo translúcido e um
+// ícone central. Isso permite um visual limpo e uniforme sem repetir
+// código em vários lugares.
+//
+// Se você quiser adicionar mais redes ou trocar o estilo, basta criar
+// mais instâncias desse widget dentro do Row do rodapé.
+// ============================================================
 class SocialIcon extends StatelessWidget {
   const SocialIcon({super.key, required this.icon});
 

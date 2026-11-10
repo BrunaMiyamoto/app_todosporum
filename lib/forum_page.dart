@@ -1,8 +1,29 @@
 import 'package:app_todosporum/app_bottom_nav.dart';
 import 'package:app_todosporum/aprenda_sobre_page.dart';
+import 'package:app_todosporum/contatos_page.dart';
 import 'package:app_todosporum/home_page.dart';
+import 'package:app_todosporum/politicas_page.dart';
+import 'package:app_todosporum/sobre_nos_page.dart';
 import 'package:flutter/material.dart';
 
+// ============================================================
+// PÁGINA DO FÓRUM
+// ============================================================
+// Esta tela é responsável por exibir a área de discussões e projetos da
+// comunidade.
+//
+// O fluxo da página segue esta lógica:
+// 1. header com menu e logo
+// 2. categoria selecionada
+// 3. campo de busca
+// 4. botão para criar post
+// 5. filtros por tags
+// 6. lista de posts
+//
+// O objetivo dos comentários aqui é facilitar a leitura do fluxo, porque
+// a página tem vários blocos interdependentes e cada um manda o estado
+// para o outro. Se for duplicar, mantenha essa ordem.
+// ============================================================
 class ForumPage extends StatefulWidget {
   const ForumPage({super.key});
 
@@ -10,6 +31,18 @@ class ForumPage extends StatefulWidget {
   State<ForumPage> createState() => _ForumPageState();
 }
 
+// ============================================================
+// BLOCO 2: ESTADO DO FÓRUM
+// ============================================================
+// Aqui ficam os dados que controlam a página:
+// - categorias visíveis
+// - tags para filtro
+// - lista de posts
+// - categoria e tag selecionadas
+//
+// Este estado é o centro da página. Qualquer alteração na categoria ou
+// no filtro muda a lista visível ao usuário.
+// ============================================================
 class _ForumPageState extends State<ForumPage> {
   final List<String> _categories = ['Projetos', 'Reclamações', 'Dúvidas'];
   final List<String> _allTags = [
@@ -73,17 +106,154 @@ class _ForumPageState extends State<ForumPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ========================================================
+    // BLOCO 3: MONTAGEM DA INTERFACE DO FÓRUM
+    // ========================================================
+    // Esse método organiza a tela em blocos visuais.
+    // A ordem é importante porque cada parte depende da anterior:
+    // - header da página
+    // - categoria
+    // - busca
+    // - botão de criar post
+    // - lista de filtros
+    // - lista de posts
+    //
+    // Se você quiser duplicar uma parte, copie a estrutura do bloco
+    // correspondente e mantenha a hierarquia da coluna principal.
+    // ========================================================
     final posts = _filteredPosts;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFEAF3F5),
+      // BLOCO 2.1: Cabeçalho da página
+      appBar: AppBar(title: Text("Fórum"), centerTitle: true),
+
+      // BLOCO 2.2: Menu lateral (drawer) e navegação entre telas
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            // BLOCO 2.2.1: Cabeçalho do menu
+            DrawerHeader(
+              decoration: BoxDecoration(color: Color(0xFF0F3C4E)),
+              child: Text(
+                "Todos Por Um",
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+            ),
+
+            // BLOCO 2.2.2: Item inicial do menu
+            ListTile(
+              leading: Icon(Icons.home),
+              iconColor: Color(0xFFF28A2F),
+              title: Text("Inicio", style: TextStyle(color: Color(0xFFF28A2F))),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => HomeScreen()),
+                );
+              },
+            ),
+
+            // BLOCO 2.2.3: Navegação para a tela de Fórum
+            ListTile(
+              leading: Icon(Icons.forum),
+              iconColor: Color(0xFFF28A2F),
+              title: Text("Fórum", style: TextStyle(color: Color(0xFFF28A2F))),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => ForumPage()),
+                );
+              },
+            ),
+
+            // BLOCO 2.2.4: Navegação para a própria página "Sobre Nós"
+            ListTile(
+              leading: Icon(Icons.assignment_late_outlined),
+              iconColor: Color(0xFFF28A2F),
+              title: Text(
+                "Sobre Nós",
+                style: TextStyle(color: Color(0xFFF28A2F)),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => SobreNosPage()),
+                );
+              },
+            ),
+
+            // BLOCO 2.2.5: Navegação para a tela "Aprenda sobre"
+            ListTile(
+              leading: Icon(Icons.menu_book),
+              iconColor: Color(0xFFF28A2F),
+              title: Text(
+                "Aprenda sobre",
+                style: TextStyle(color: Color(0xFFF28A2F)),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => AprendaSobrePage()),
+                );
+              },
+            ),
+
+            // BLOCO 2.2.6: Navegação para a tela de Contatos
+            ListTile(
+              leading: Icon(Icons.call),
+              iconColor: Color(0xFFF28A2F),
+              title: Text(
+                "Contatos",
+                style: TextStyle(color: Color(0xFFF28A2F)),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => ContatosPage()),
+                );
+              },
+            ),
+
+            // BLOCO 2.2.7: Navegação para a tela de Políticas
+            ListTile(
+              leading: Icon(Icons.announcement_outlined),
+              iconColor: Color(0xFFF28A2F),
+              title: Text(
+                "Nossas Políticas",
+                style: TextStyle(color: Color(0xFFF28A2F)),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => PoliticasPage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+
+      // BLOCO 2.3: Barra inferior visível em todas as telas
       bottomNavigationBar: AppBottomNavigationBar(
-        selectedIndex: 1,
+        selectedIndex: 0,
         onTap: (index) {
           if (index == 0) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => const HomeScreen()),
+            );
+          }
+          if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const ForumPage()),
             );
           }
           if (index == 2) {
@@ -100,71 +270,9 @@ class _ForumPageState extends State<ForumPage> {
           }
         },
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Color(0xFF0F3C4E)),
-              child: Text(
-                'Todos Por Um',
-                style: TextStyle(color: Colors.white, fontSize: 22),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              iconColor: const Color(0xFFF28A2F),
-              title: const Text(
-                'Início',
-                style: TextStyle(color: Color(0xFFF28A2F)),
-              ),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              leading: const Icon(Icons.forum),
-              iconColor: const Color(0xFFF28A2F),
-              title: const Text(
-                'Fórum',
-                style: TextStyle(color: Color(0xFFF28A2F)),
-              ),
-              onTap: () => Navigator.pop(context),
-            ),
-          ],
-        ),
-      ),
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-              color: const Color(0xFFC8DDE6),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    icon: const Icon(
-                      Icons.menu,
-                      color: Color(0xFF0F3C4E),
-                      size: 36,
-                    ),
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Image.asset(
-                        'assets/img/logo branco.png',
-                        height: 36,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
             Container(
               width: double.infinity,
               color: const Color(0xFFEAF3F5),
@@ -258,7 +366,7 @@ class _ForumPageState extends State<ForumPage> {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: _allTags.length + 1,
-                  separatorBuilder: (_, __) => const SizedBox(width: 10),
+                  separatorBuilder: (context, _) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     final isAll = index == 0;
                     final tag = isAll ? 'Todos' : _allTags[index - 1];

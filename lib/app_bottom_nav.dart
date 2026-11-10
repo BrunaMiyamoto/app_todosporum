@@ -1,5 +1,23 @@
 import 'package:flutter/material.dart';
 
+// ============================================================
+// BARRA DE NAVEGAÇÃO INFERIOR (BOTTOM NAVIGATION)
+// ============================================================
+// Este widget é usado em várias telas para criar a navegação inferior,
+// como Home, Fórum, Aprender e Perfil.
+//
+// Ele funciona como um componente reutilizável: em vez de repetir a
+// mesma estrutura em cada página, você cria uma vez e passa a aba
+// selecionada e a função que será chamada ao clicar em um item.
+//
+// Regras importantes:
+// - selectedIndex controla qual item está ativo
+// - onTap recebe a posição do item clicado
+// - os itens são acessados por índice: [0, 1, 2, 3]
+//
+// Se quiser duplicar esse padrão em outra tela, basta reaproveitar o
+// mesmo widget e ajustar as rotas de cada item.
+// ============================================================
 class AppBottomNavigationBar extends StatelessWidget {
   const AppBottomNavigationBar({
     super.key,
@@ -49,6 +67,21 @@ class AppBottomNavigationBar extends StatelessWidget {
   }
 }
 
+// ============================================================
+// BLOCO 2: ÁREA DO USUÁRIO / PERFIL
+// ============================================================
+// Esta tela representa a área de perfil do usuário. Ela é exibida na
+// última aba do menu inferior e serve como espaço de identidade do app.
+//
+// Aqui você pode futuramente adicionar:
+// - foto do usuário
+// - nome
+// - botão de editar perfil
+// - notificações e configurações
+//
+// É um bom exemplo de "bloco de conteúdo" que pode ser copiado e
+// adaptado para outras telas com aparência similar.
+// ============================================================
 class UserAreaPage extends StatelessWidget {
   const UserAreaPage({super.key});
 
