@@ -141,6 +141,12 @@ class PoliticasPage extends StatelessWidget {
         ),
       ),
 
+      body: Column(
+        children: [
+          ListTile(title: Text("Politicas de Privacidade"), subtitle: Text("")),
+        ],
+      ),
+
       // BLOCO 2.3: Barra inferior visível em todas as telas
       bottomNavigationBar: AppBottomNavigationBar(
         selectedIndex: 0,

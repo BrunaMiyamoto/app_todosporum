@@ -42,7 +42,17 @@ class _SobreNosPageState extends State<SobreNosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // BLOCO 2.1: Cabeçalho da página
-      appBar: AppBar(title: Text("Sobre Nós"), centerTitle: true),
+      appBar: AppBar(
+        title: Text(
+          "Sobre o Projeto",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF0A6D8E),
+            fontSize: 25,
+          ),
+        ),
+        centerTitle: true,
+      ),
 
       // BLOCO 2.2: Menu lateral (drawer) e navegação entre telas
       drawer: Drawer(
@@ -154,6 +164,23 @@ class _SobreNosPageState extends State<SobreNosPage> {
             ),
           ],
         ),
+      ),
+
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsetsGeometry.symmetric(vertical: 20),
+            child: ListTile(
+              title: Text(
+                "O Todos Por Um nasceu como uma iniciativa de estudantes de um curso técnico em tecnologia, fomos desafiados a criar uma solução que contribuísse para os Objetivos de Desenvolvimento Sustentável da Agenda 2030 (ODS) e, ao olhar para nossa realidade, percebemos que a verdadeira mudança começa quando todos se sentem parte dela.Entendemos que transformar a sociedade exige mais do que boas intenções: é preciso agir na causa, estimular a participação e abrir espaço para que cada cidadão tenha voz. Acreditamos que a força de uma cidade está nas pessoas que a constroem todos os dias. Por isso, unimos nossos conhecimentos técnicos às vivências e experiências de cada integrante do grupo, somando esforços com parceiros que compartilham do mesmo propósito.Criamos um projeto que utiliza a tecnologia como ferramenta de cidadania ativa, buscando simplificar processos burocráticos e fortalecer o vínculo entre a população e a Câmara Municipal de Marília. Nosso propósito é inspirar a participação popular, aproximando o mariliense das decisões que moldam sua cidade. Por meio da nossa plataforma digital, oferecemos um canal direto de comunicação com o poder público, onde as demandas da comunidade são registradas, acompanhadas e transformadas em oportunidades reais de mudança.Mais do que uma ferramenta digital, o Todos Por Um é um movimento coletivo por uma Marília mais participativa, conectada e consciente de seu poder transformador.",
+
+                textAlign: TextAlign.justify,
+              ),
+
+              subtitle: Image.asset("assets/img/logo branco.png"),
+            ),
+          ),
+        ],
       ),
 
       // BLOCO 2.3: Barra inferior visível em todas as telas

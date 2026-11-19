@@ -3,6 +3,7 @@ import 'package:app_todosporum/contatos_page.dart';
 import 'package:app_todosporum/forum_page.dart';
 import 'package:app_todosporum/home_page.dart';
 import 'package:app_todosporum/politicas_page.dart';
+import 'package:app_todosporum/services/aprenda_post_service.dart';
 import 'package:app_todosporum/sobre_nos_page.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,8 @@ class AprendaSobrePage extends StatefulWidget {
 }
 
 class _AprendaSobrePageState extends State<AprendaSobrePage> {
+  // final AprendaPostService _aprendaPostService = AprendaPostService();
+  // late Future<List<AprendaSobre>> _aprendaSobre;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,6 +146,33 @@ class _AprendaSobrePageState extends State<AprendaSobrePage> {
           ],
         ),
       ),
+
+      // body: Column(
+      //   children: [
+      //     Expanded(
+      //       child: FutureBuilder(
+      //         future: _aprendaSobre,
+      //         builder: (context, asyncSnapshot) {
+      //           if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+      //             return const Center(child: CircularProgressIndicator());
+      //           }
+
+      //           if (asyncSnapshot.hasError) {
+      //             return Center(child: Text('${asyncSnapshot.error}'));
+      //           }
+
+      //           final aprendaPost = asyncSnapshot.data ?? [];
+
+      //           if (noticias.isEmpty) {
+      //             return const Center(
+      //               child: Text('Nenhuma postagem Encontrada'),
+      //             );
+      //           }
+      //         },
+      //       ),
+      //     ),
+      //   ],
+      // ),
 
       // BLOCO 2.3: Barra inferior visível em todas as telas
       bottomNavigationBar: AppBottomNavigationBar(

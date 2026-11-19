@@ -4,6 +4,7 @@ import 'package:app_todosporum/contatos_page.dart';
 import 'package:app_todosporum/forum_page.dart';
 import 'package:app_todosporum/politicas_page.dart';
 import 'package:app_todosporum/sobre_nos_page.dart';
+import 'package:app_todosporum/dialogflow_chat_page.dart';
 import 'package:flutter/material.dart';
 
 // ============================================================
@@ -19,6 +20,7 @@ import 'package:flutter/material.dart';
 // Se você quiser alterar a página inicial, procure primeiro a seção
 // correspondente ao bloco e mantenha o mesmo padrão de organização.
 // ============================================================
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -46,6 +48,13 @@ class HomeScreen extends StatefulWidget {
 // ============================================================
 class _HomeScreenState extends State<HomeScreen> {
   final int _selectedIndex = 0;
+
+  void _abrirChat() {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(builder: (_) => const DialogflowChatPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -217,6 +226,14 @@ class _HomeScreenState extends State<HomeScreen> {
           : null,
 
       body: screens[_selectedIndex],
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+              onPressed: _abrirChat,
+              backgroundColor: const Color(0xFF0A6D8E),
+              tooltip: 'Abrir chat',
+              child: const Icon(Icons.chat, color: Colors.white),
+            )
+          : null,
       bottomNavigationBar: AppBottomNavigationBar(
         selectedIndex: 0,
         onTap: (index) {
