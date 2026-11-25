@@ -25,4 +25,24 @@ void main() {
       expect(find.byIcon(Icons.person), findsWidgets);
     },
   );
+
+  testWidgets('Login opens from home and links to account registration', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const MyApp());
+
+    await tester.tap(find.byIcon(Icons.login));
+    await tester.pumpAndSettle();
+    expect(find.text('Bem-vindo(a)!'), findsOneWidget);
+
+    await tester.tap(find.text('Primeiro acesso? Cadastre-se'));
+    await tester.pumpAndSettle();
+    expect(find.text('Faça seu cadastro'), findsOneWidget);
+    expect(find.text('Dados pessoais'), findsOneWidget);
+    expect(find.text('Dados do perfil'), findsOneWidget);
+
+    await tester.tap(find.text('Início'));
+    await tester.pumpAndSettle();
+    expect(find.text('ENVIE SUA IDEIA JÁ'), findsOneWidget);
+  });
 }

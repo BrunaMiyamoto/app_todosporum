@@ -5,6 +5,7 @@ import 'package:app_todosporum/forum_page.dart';
 import 'package:app_todosporum/politicas_page.dart';
 import 'package:app_todosporum/sobre_nos_page.dart';
 import 'package:app_todosporum/dialogflow_chat_page.dart';
+import 'package:app_todosporum/auth_pages.dart';
 import 'package:flutter/material.dart';
 
 // ============================================================
@@ -56,6 +57,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _abrirLogin() {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(builder: (_) => const LoginPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // ========================================================
@@ -102,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Padding(
                   padding: const EdgeInsets.only(right: 12),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _abrirLogin,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFF28A2F),
                       foregroundColor: Colors.white,
